@@ -15,7 +15,7 @@ FROM alpine:latest
 ARG AUUID="7bf357e0-5f10-4afb-a2e5-bc0cee0fc6de"
 ARG CADDYIndexPage="https://github.com/AYJCSGM/mikutap/archive/master.zip"
 ARG ParameterSSENCYPT="chacha20-ietf-poly1305"
-ARG PORT=
+ENV PORT 
 
 COPY --from=xray /tmp/xray /usr/bin
 COPY --from=caddy /go/caddy /usr/bin
