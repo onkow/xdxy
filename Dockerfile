@@ -1,5 +1,5 @@
 FROM golang:alpine AS caddy
-RUN go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest
+RUN go install github.com/caddyserver/xcaddy/cmd/xcaddy@latest && \
     xcaddy build latest
 
 FROM golang:alpine AS xray
