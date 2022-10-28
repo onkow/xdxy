@@ -25,36 +25,13 @@ COPY entrypoint.sh /usr/bin
 RUN apk update && \
     apk add --no-cache ca-certificates tor && \
     chmod +x /usr/bin/xray && \
-	chmod +x /usr/bin/caddy && \
-	chmod +x /usr/bin/entrypoint.sh && \
-	rm -rf /var/cache/apk/* && \
-	mkdir -p /etc/xray/ /etc/caddy/ /usr/share/caddy && echo -e "User-agent: *\nDisallow: /" >/usr/share/caddy/robots.txt && \
-	wget $CADDYIndexPage -O /usr/share/caddy/index.html && unzip -qo /usr/share/caddy/index.html -d /usr/share/caddy/ && mv /usr/share/caddy/*/* /usr/share/caddy/ && \
-	cat /conf/Caddyfile | sed -e "1c :$PORT" -e "s/\$AUUID/$AUUID/g" -e "s/\$MYUUID-HASH/$(caddy hash-password --plaintext $AUUID)/g" >/etc/caddy/Caddyfile && \
+    chmod +x /usr/bin/caddy && \
+    chmod +x /usr/bin/entrypoint.sh && \
+    rm -rf /var/cache/apk/* && \
+    mkdir -p /etc/xray/ /etc/caddy/ /usr/share/caddy && echo -e "User-agent: *\nDisallow: /" >/usr/share/caddy/robots.txt && \
+    wget $CADDYIndexPage -O /usr/share/caddy/index.html && unzip -qo /usr/share/caddy/index.html -d /usr/share/caddy/ && mv /usr/share/caddy/*/* /usr/share/caddy/ && \
+    cat /conf/Caddyfile | sed -e "1c :$PORT" -e "s/\$AUUID/$AUUID/g" -e "s/\$MYUUID-HASH/$(caddy hash-password --plaintext $AUUID)/g" >/etc/caddy/Caddyfile && \
     cat /conf/xray.json | sed -e "s/\$AUUID/$AUUID/g" -e "s/\$ParameterSSENCYPT/$ParameterSSENCYPT/g" >/etc/xray/config.json
 	
 	
 CMD /usr/bin/entrypoint.sh	
-	
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-FROM alpine
-COPY --from=builder /tmp/xray /usr/bin
-
-ADD xray.sh /xray.sh
-RUN chmod +x /xray.sh
-CMD /xray.sh
